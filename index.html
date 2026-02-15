@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Netflix Birthday</title>
+
+<style>
+body{
+margin:0;
+background:black;
+color:white;
+font-family:Segoe UI;
+overflow:hidden;
+text-align:center;
+}
+
+/* cinema bars */
+.bar{
+position:fixed;
+width:100%;
+height:80px;
+background:black;
+z-index:99;
+}
+.top{top:0}
+.bottom{bottom:0}
+
+/* pages */
+.page{display:none;height:100vh;justify-content:center;align-items:center;flex-direction:column}
+.active{display:flex}
+
+/* netflix text */
+.netflix{
+font-size:90px;
+color:red;
+font-weight:bold;
+letter-spacing:8px;
+animation:zoom 3s forwards;
+}
+@keyframes zoom{
+from{transform:scale(.2);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+/* name glow */
+.name{
+font-size:100px;
+color:#ff77aa;
+text-shadow:0 0 50px hotpink,0 0 100px pink;
+animation:fade 4s forwards;
+}
+@keyframes fade{
+from{opacity:0;transform:translateY(120px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+/* text */
+.line{
+font-size:48px;
+opacity:0;
+animation:show 3s forwards;
+}
+@keyframes show{
+to{opacity:1}
+}
+
+/* teddy */
+.teddy{
+font-size:120px;
+animation:bounce 2s infinite;
+}
+@keyframes bounce{50%{transform:translateY(-30px)}}
+
+/* balloons */
+.balloon{
+position:fixed;
+font-size:30px;
+animation:fly 10s linear infinite;
+}
+@keyframes fly{
+from{transform:translateY(100vh)}
+to{transform:translateY(-120vh)}
+}
+
+/* spark */
+.spark{
+position:fixed;
+font-size:20px;
+animation:fall 5s linear;
+}
+@keyframes fall{
+from{transform:translateY(-10vh)}
+to{transform:translateY(110vh)}
+}
+
+/* photo */
+#photo{
+width:280px;
+border-radius:25px;
+box-shadow:0 0 60px hotpink;
+animation:photo 4s infinite alternate;
+}
+@keyframes photo{
+from{transform:scale(.9)}
+to{transform:scale(1.1)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bar top"></div>
+<div class="bar bottom"></div>
+
+<!-- PAGE 1 -->
+<div id="p0" class="page active">
+<div class="netflix">NETFLIX</div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="p1" class="page">
+<div class="line">Presenting</div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="p2" class="page">
+<div class="name">NEHA ✨</div>
+</div>
+
+<!-- PAGE 4 -->
+<div id="p3" class="page">
+<div id="msg" class="line"></div>
+<div class="teddy">🧸</div>
+</div>
+
+<!-- PAGE 5 -->
+<div id="p4" class="page">
+<h1>Happy Birthday 🎂</h1>
+<img src="photo.jpg" id="photo">
+<h2>You are truly special 💖</h2>
+</div>
+
+<audio autoplay>
+<source src="https://www.fesliyanstudios.com/play-mp3/387">
+</audio>
+
+<script>
+
+/* female voice */
+function speak(t){
+let v=speechSynthesis.getVoices().find(x=>x.name.includes("Female")||x.name.includes("Zira"));
+let msg=new SpeechSynthesisUtterance(t);
+msg.voice=v||speechSynthesis.getVoices()[0];
+msg.rate=.9;
+speechSynthesis.speak(msg);
+}
+
+/* balloons */
+setInterval(()=>{
+let b=document.createElement("div");
+b.className="balloon";
+b.innerHTML="🎈";
+b.style.left=Math.random()*100+"vw";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),10000);
+},600);
+
+/* spark */
+setInterval(()=>{
+let s=document.createElement("div");
+s.className="spark";
+s.innerHTML="✨";
+s.style.left=Math.random()*100+"vw";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),5000);
+},300);
+
+/* lines */
+let lines=[
+"Happy Birthday Neha 💖",
+"You are beautiful 🌸",
+"You are unforgettable ✨",
+"You make days brighter ☀️",
+"You are pure happiness 🎀",
+"Today belongs to you 🎉"
+];
+
+let i=0;
+
+/* flow timing */
+setTimeout(()=>show(1),3500);
+setTimeout(()=>show(2),6500);
+setTimeout(()=>{
+show(3);
+run();
+},10000);
+
+function run(){
+if(i<lines.length){
+msg.innerHTML=lines[i];
+speak(lines[i]);
+i++;
+setTimeout(run,4200);
+}
+else{
+setTimeout(()=>{
+show(4);
+speak("Happy Birthday Neha. Stay happy always.");
+},3000);
+}
+}
+
+function show(n){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById("p"+n).classList.add("active");
+}
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Netflix Birthday</title>
+<title>Theatre Birthday</title>
 
 <style>
 body{
@@ -14,59 +14,61 @@ overflow:hidden;
 text-align:center;
 }
 
-/* cinema bars */
-.bar{
-position:fixed;
-width:100%;
-height:80px;
-background:black;
-z-index:99;
-}
-.top{top:0}
-.bottom{bottom:0}
-
 /* pages */
-.page{display:none;height:100vh;justify-content:center;align-items:center;flex-direction:column}
+.page{
+display:none;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
 .active{display:flex}
 
-/* netflix text */
-.netflix{
-font-size:90px;
-color:red;
-font-weight:bold;
-letter-spacing:8px;
-animation:zoom 3s forwards;
+/* spotlight */
+.spot{
+position:absolute;
+width:400px;
+height:400px;
+border-radius:50%;
+background:radial-gradient(circle,rgba(255,255,255,.4),transparent 70%);
+animation:move 6s infinite alternate;
+}
+@keyframes move{
+from{transform:translate(-200px,-200px)}
+to{transform:translate(200px,200px)}
+}
+
+/* intro */
+.intro{
+font-size:60px;
+letter-spacing:5px;
+animation:fade 3s forwards;
+opacity:0;
+}
+@keyframes fade{to{opacity:1;transform:scale(1.1)}}
+
+/* name */
+.name{
+font-size:120px;
+color:#ff77aa;
+text-shadow:0 0 80px pink,0 0 150px hotpink;
+animation:zoom 5s forwards;
 }
 @keyframes zoom{
 from{transform:scale(.2);opacity:0}
 to{transform:scale(1);opacity:1}
 }
 
-/* name glow */
-.name{
-font-size:100px;
-color:#ff77aa;
-text-shadow:0 0 50px hotpink,0 0 100px pink;
-animation:fade 4s forwards;
-}
-@keyframes fade{
-from{opacity:0;transform:translateY(120px)}
-to{opacity:1;transform:translateY(0)}
-}
-
 /* text */
-.line{
+.text{
 font-size:48px;
 opacity:0;
-animation:show 3s forwards;
-}
-@keyframes show{
-to{opacity:1}
+animation:fade 3s forwards;
 }
 
 /* teddy */
 .teddy{
-font-size:120px;
+font-size:140px;
 animation:bounce 2s infinite;
 }
 @keyframes bounce{50%{transform:translateY(-30px)}}
@@ -75,7 +77,7 @@ animation:bounce 2s infinite;
 .balloon{
 position:fixed;
 font-size:30px;
-animation:fly 10s linear infinite;
+animation:fly 12s linear infinite;
 }
 @keyframes fly{
 from{transform:translateY(100vh)}
@@ -86,7 +88,7 @@ to{transform:translateY(-120vh)}
 .spark{
 position:fixed;
 font-size:20px;
-animation:fall 5s linear;
+animation:fall 6s linear;
 }
 @keyframes fall{
 from{transform:translateY(-10vh)}
@@ -97,10 +99,10 @@ to{transform:translateY(110vh)}
 #photo{
 width:280px;
 border-radius:25px;
-box-shadow:0 0 60px hotpink;
-animation:photo 4s infinite alternate;
+box-shadow:0 0 80px pink;
+animation:zoomPhoto 4s infinite alternate;
 }
-@keyframes photo{
+@keyframes zoomPhoto{
 from{transform:scale(.9)}
 to{transform:scale(1.1)}
 }
@@ -109,49 +111,48 @@ to{transform:scale(1.1)}
 
 <body>
 
-<div class="bar top"></div>
-<div class="bar bottom"></div>
-
-<!-- PAGE 1 -->
+<!-- PAGE1 -->
 <div id="p0" class="page active">
-<div class="netflix">NETFLIX</div>
+<div class="intro">🎬 A Special Presentation 🎬</div>
 </div>
 
-<!-- PAGE 2 -->
+<!-- PAGE2 -->
 <div id="p1" class="page">
-<div class="line">Presenting</div>
+<div class="spot"></div>
+<div class="name">NEHA 💖</div>
 </div>
 
-<!-- PAGE 3 -->
+<!-- PAGE3 -->
 <div id="p2" class="page">
-<div class="name">NEHA ✨</div>
-</div>
-
-<!-- PAGE 4 -->
-<div id="p3" class="page">
-<div id="msg" class="line"></div>
+<div id="msg" class="text"></div>
 <div class="teddy">🧸</div>
 </div>
 
-<!-- PAGE 5 -->
-<div id="p4" class="page">
-<h1>Happy Birthday 🎂</h1>
+<!-- PAGE4 -->
+<div id="p3" class="page">
+<h1>🎂 Happy Birthday 🎂</h1>
 <img src="photo.jpg" id="photo">
-<h2>You are truly special 💖</h2>
+<h2>You are magical 💖</h2>
 </div>
 
-<audio autoplay>
-<source src="https://www.fesliyanstudios.com/play-mp3/387">
+<!-- sounds -->
+<audio id="clap">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d0c7f9e0cc.mp3">
+</audio>
+
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8e0a0a0c5.mp3">
 </audio>
 
 <script>
 
-/* female voice */
-function speak(t){
+/* girl voice */
+function speak(text){
 let v=speechSynthesis.getVoices().find(x=>x.name.includes("Female")||x.name.includes("Zira"));
-let msg=new SpeechSynthesisUtterance(t);
+let msg=new SpeechSynthesisUtterance(text);
 msg.voice=v||speechSynthesis.getVoices()[0];
-msg.rate=.9;
+msg.rate=.85;
+msg.pitch=1.4;
 speechSynthesis.speak(msg);
 }
 
@@ -162,8 +163,8 @@ b.className="balloon";
 b.innerHTML="🎈";
 b.style.left=Math.random()*100+"vw";
 document.body.appendChild(b);
-setTimeout(()=>b.remove(),10000);
-},600);
+setTimeout(()=>b.remove(),12000);
+},500);
 
 /* spark */
 setInterval(()=>{
@@ -172,28 +173,52 @@ s.className="spark";
 s.innerHTML="✨";
 s.style.left=Math.random()*100+"vw";
 document.body.appendChild(s);
-setTimeout(()=>s.remove(),5000);
+setTimeout(()=>s.remove(),6000);
 },300);
 
 /* lines */
 let lines=[
-"Happy Birthday Neha 💖",
 "You are beautiful 🌸",
-"You are unforgettable ✨",
-"You make days brighter ☀️",
-"You are pure happiness 🎀",
-"Today belongs to you 🎉"
+"You are sunshine ☀️",
+"You are moonlight 🌙",
+"You are happiness 💕",
+"You are magic ✨",
+"You are rare 💎",
+"You are graceful 🌹",
+"You are adorable 🥰",
+"You are lovely 💗",
+"You are precious 💐",
+"You are amazing 🌟",
+"You are elegant 👑",
+"You are sweet 🎀",
+"You are wonderful 🌈",
+"You are charming 💝",
+"You are inspiring 🌟",
+"You are glowing ⭐",
+"You are peaceful 🌙",
+"You are delightful 🌸",
+"You are dreamy 💫",
+"You are pure joy 🎉",
+"You are lovable 💕",
+"You are bright ☀️",
+"You are stunning 💎",
+"You are fantastic 🎊",
+"You deserve happiness 🎂"
 ];
 
 let i=0;
 
-/* flow timing */
-setTimeout(()=>show(1),3500);
-setTimeout(()=>show(2),6500);
+/* flow */
 setTimeout(()=>{
-show(3);
+show(1);
+document.getElementById("clap").play();
+speak("Presenting Neha");
+},4000);
+
+setTimeout(()=>{
+show(2);
 run();
-},10000);
+},9000);
 
 function run(){
 if(i<lines.length){
@@ -204,9 +229,9 @@ setTimeout(run,4200);
 }
 else{
 setTimeout(()=>{
-show(4);
-speak("Happy Birthday Neha. Stay happy always.");
-},3000);
+show(3);
+speak("Happy Birthday Neha");
+},4000);
 }
 }
 
